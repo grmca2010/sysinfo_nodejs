@@ -45,7 +45,7 @@ function cq5status(callback,responseResult){
 	});
 }
 
-function readPuppetDirect(callback,responseResult){
+function readPuppetDirectory(callback,responseResult){
 	responseResult.puppet={};
 	dir.readFiles(path.join(__dirname,"test"),function(err, content,filename, next) {
 			if (err) throw err;
