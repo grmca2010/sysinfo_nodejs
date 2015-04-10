@@ -1,8 +1,8 @@
-
 var exec = require('child_process').exec,child;
+var path= require('path');
 // finding disk space
-function diskspace(callback,responseResult) {
-	
+
+function diskspace(callback,responseResult) {	
     var df_command=exec(' df -h  / | awk \'NR>1 {print $1 "*-" $3 "*--"$4}\'',  function (error, stdout, stderr) {
 		var df_result=stdout.toString().split("\n");
 		responseResult.diskspace=[];
@@ -45,6 +45,20 @@ function cq5status(callback,responseResult){
 	});
 }
 
+function readPuppetDirect(callback,responseResult){
+	responseResult.puppet={};
+	dir.readFiles(path.join(__dirname,"test"),function(err, content,filename, next) {
+			if (err) throw err;
+			responseResult.puppet[path.basename(filename)]=content;
+			next();
+		},
+		function(err, files){
+			if (err) throw err;
+			callback();
+			console.log('finished reading files:', files);
+	 });
+
+}
 
 // prints text
 function finish(response,responseResult) { 
