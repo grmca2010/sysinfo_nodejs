@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf8">
+  <meta name="viewport" content="width=device-width">
+  <!--<base href="/">-->
+  <base href=".">
+  <title>Sandbox Quick Start Guide</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+  <!-- the navbar gets inserted here by jquery -->
+
+<div class="container">
+
+  <!-- Main component for a primary marketing message or call to action -->
+
+  <div class="row">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#jasmine">Jasmine</a></li>
+    </ul>
+    <div class="tab-content well">
+      <div id="jasmine" class="tab-pane fade in active">
+        <ul class="nav nav-pills">
+          <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
+          <li><a data-toggle="tab" href="#batch_runner">Batch Runner</a></li>
+          <li><a data-toggle="tab" href="#bookmarklet">Bookmarklet</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="overview" class="tab-pane fade in active"></div>
+          <div id="batch_runner" class="tab-pane fade"></div>
+          <div id="bookmarklet" class="tab-pane fade"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer">
+    <p>&copy; All Rights Reserved, Cisco Systems 2014</p>
+  </div>
+</div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/Markdown.Converter.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      jQuery(document).ready(function jQueryReady($) {
+        var converter = new Markdown.Converter(),
+        /* Alias the conversion method to make it easier to swap libraries in the future. */
+        markdownToHtml = converter.makeHtml;
+
+        $.get("docs/documentation/testing/jasmine/overview.md").success(function (data) {
+          $("#overview").html(markdownToHtml(data));
+        });
+
+
+        $.get("docs/documentation/testing/jasmine/batch_runner.md").success(function (data) {
+          $("#batch_runner").html(markdownToHtml(data));
+        });
+
+          $.get("docs/documentation/testing/jasmine/bookmarklet.html").success(function (data) {
+          $("#bookmarklet").prepend(data);
+        });
+
+        $.get("navbar.html").success(function (data) {
+          $("body").prepend(data);
+        });
+      });
+    </script>
+
+  </body>
+  </html>
