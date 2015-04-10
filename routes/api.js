@@ -1,5 +1,6 @@
 var exec = require('child_process').exec,child;
 var path= require('path');
+var dir=require("node-dir");
 // finding disk space
 
 function diskspace(callback,responseResult) {	
@@ -47,7 +48,7 @@ function cq5status(callback,responseResult){
 
 function readPuppetDirectory(callback,responseResult){
 	responseResult.puppet={};
-	dir.readFiles(path.join(__dirname,"test"),function(err, content,filename, next) {
+	dir.readFiles(path.join("/var/node/sysinfo_nodejs/test"),function(err, content,filename, next) {
 			if (err) throw err;
 			responseResult.puppet[path.basename(filename)]=content;
 			next();
@@ -72,7 +73,7 @@ function finish(response,responseResult) {
 
 // executes the callbacks one after another
 function series(response) {
-    var callbackSeries = [diskspace,jenkinstatus,cq5status];
+    var callbackSeries = [diskspace,jenkinstatus,cq5status,readPuppetDirectory];
     var responseResult={};
     function next() {
         var callback = callbackSeries.shift();
