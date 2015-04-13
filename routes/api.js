@@ -45,7 +45,7 @@ function cq5status(callback,responseResult){
 }
 
 function puppetstatus(callback,responseResult){
-	var puupet_command=exec('ps -ef | grep agent | grep -v /bin/sh | awk \'{print $1"*-"$2"*-"$5}\'',  function (error, stdout, stderr) {
+	var puupet_command=exec('ps -ef | grep agent | grep -v /bin/sh | grep -v grep  | awk \'{print $1"*-"$2"*-"$5}\'',  function (error, stdout, stderr) {
 		responseResult.puppet={"status":"down","start_time":""}
 		if(stdout){
 			console.log(stdout);
@@ -62,6 +62,7 @@ function readPuppetDirectory(callback,responseResult){
 	responseResult.puppet={};
 	dir.readFiles("/home/devops/data",function(err, content,filename, next) {
 			if (err) throw err;
+
 			responseResult.puppet[path.basename(filename)]=content;
 			next();
 		},
