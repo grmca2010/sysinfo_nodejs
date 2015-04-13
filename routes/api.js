@@ -45,7 +45,7 @@ function cq5status(callback,responseResult){
 }
 
 function puppetstatus(callback,responseResult){
-	var puupet_command=exec('ps -ef | grep agent | grep -v /bin/sh | grep -v grep  | awk \'{print $1"*-"$2"*-"$5}\'',  function (error, stdout, stderr) {
+	var puupet_command=exec('ps -ef | grep agent | grep -v /bin/sh | grep -v grep | awk \'{print $1"*-"$2"*-"$5}\'',  function (error, stdout, stderr) {
 		responseResult.puppet={"status":"down","start_time":""}
 		if(stdout){
 			console.log(stdout);
@@ -59,11 +59,11 @@ function puppetstatus(callback,responseResult){
 
 
 function readPuppetDirectory(callback,responseResult){
-	responseResult.puppet={};
+	responseResult.puppet.info={};
 	dir.readFiles("/home/devops/data",function(err, content,filename, next) {
 			if (err) throw err;
-
-			responseResult.puppet[path.basename(filename)]=content;
+			console.log(content,filename);
+			responseResult.puppet.info[path.basename(filename)]=content;
 			next();
 		},
 		function(err, files){
@@ -115,7 +115,7 @@ function finish(response,responseResult) {
 
 // executes the callbacks one after another
 function series(response) {
-    var callbackSeries = [diskspace,jenkinstatus,cq5status,readPuppetDirectory,puppetstatus,puppetstatus,jenkinJob_deploy_lastBuild,jenkinJob_gitwem_lastBuild];
+    var callbackSeries = [diskspace,jenkinstatus,cq5status,puppetstatus,readPuppetDirectory,jenkinJob_deploy_lastBuild,jenkinJob_gitwem_lastBuild];
     var responseResult={};
     function next() {
         var callback = callbackSeries.shift();
