@@ -84,7 +84,7 @@ function jenkinJob_deploy_lastBuild(callback,responseResult){
 	      var data=JSON.parse(response.body);
         responseResult.deploy_lastBuild.status=data.result;
 				callback();
-	 }
+	 })
 }
 
 function jenkinJob_gitwem_lastBuild(callback,responseResult){
@@ -98,7 +98,7 @@ function jenkinJob_gitwem_lastBuild(callback,responseResult){
 	      var data=JSON.parse(response.body);
         responseResult.gitwem_lastBuild.actions=data.actions;
 				callback();
-	 }
+	 })
 }
 
 
