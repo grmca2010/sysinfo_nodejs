@@ -81,7 +81,7 @@ function jenkinJob_deploy_lastBuild(callback,responseResult){
             callback();
             return;
         }
-	      var data=JSON.parse((response.body);
+	      var data=JSON.parse(response.body);
         responseResult.deploy_lastBuild.status=data.result;
 				callback();
 	 }
