@@ -61,13 +61,16 @@ function puppetstatus(callback,responseResult){
 function readPuppetDirectory(callback,responseResult){
 	responseResult.puppet.info={};
 	dir.readFiles("/home/devops/data",function(err, content,filename, next) {
-			if (err) throw err;
+			if (err) {
+          callback();
+          responseResult.puppet.info.error="not able to read the directory /home/devops/data";
+          return;
+      };
 			console.log(content,filename);
 			responseResult.puppet.info[path.basename(filename)]=content;
 			next();
 		},
 		function(err, files){
-			if (err) throw err;
 			callback();
 			console.log('finished reading files:', files);
 	 });
