@@ -63,7 +63,7 @@ function readPuppetDirectory(callback,responseResult){
 	dir.readFiles("/home/devops/data",function(err, content,filename, next) {
 			if (err) {console.log("error while reading the directory");callback();};
 			console.log(content,filename);
-			if(path.basename(filename)=="cq5_last_started.json"){
+			if(path.basename(filename)=="cq5-last-run.json"){
 				responseResult.cq5.last_started_time=content;
 			} else {
 				responseResult.puppet.info[path.basename(filename)]=content;
