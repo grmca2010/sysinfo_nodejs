@@ -33,7 +33,7 @@ function jenkinstatus(callback,responseResult){
 
 function cq5status(callback,responseResult){
 	var cq5_command=exec('ps -ef | grep "4502" | grep "cq-quickstart" | grep -v /bin/sh | head -1 | awk \'{print $1"*-"$2"*-"$5}\'',  function (error, stdout, stderr) {
-		responseResult.cq5={"status":"down","start_time":""}
+		responseResult.cq5={"status":"down","start_time":"","last_started_time":""}
 		if(stdout){
 			console.log(stdout);
 			var service_result=stdout.split("*-");
@@ -61,16 +61,17 @@ function puppetstatus(callback,responseResult){
 function readPuppetDirectory(callback,responseResult){
 	responseResult.puppet.info={};
 	dir.readFiles("/home/devops/data",function(err, content,filename, next) {
-			if (err) {
-          callback();
-          responseResult.puppet.info.error="not able to read the directory /home/devops/data";
-          return;
-      };
+			if (err) {console.log("error while reading the directory");callback();};
 			console.log(content,filename);
-			responseResult.puppet.info[path.basename(filename)]=content;
+			if(path.basename(filename)=="cq5_last_started.json"){
+				responseResult.cq5.last_started_time=content;
+			} else {
+				responseResult.puppet.info[path.basename(filename)]=content;
+			}
 			next();
 		},
 		function(err, files){
+			if (err) {console.log("error while reading the directory");};
 			callback();
 			console.log('finished reading files:', files);
 	 });
@@ -86,7 +87,7 @@ function jenkinJob_deploy_lastBuild(callback,responseResult){
             return;
         }
 	      var data=JSON.parse(response.body);
-        responseResult.deploy_lastBuild.status=data.result;
+        responseResult.deploy_lastBuild.status=data;
 				callback();
 	 })
 }
@@ -100,7 +101,7 @@ function jenkinJob_gitwem_lastBuild(callback,responseResult){
             return;
         }
 	      var data=JSON.parse(response.body);
-        responseResult.gitwem_lastBuild.actions=data.actions;
+        responseResult.gitwem_lastBuild.actions=data;
 				callback();
 	 })
 }
