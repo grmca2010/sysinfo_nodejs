@@ -5,7 +5,7 @@ var request=require("request");
 
 // finding disk space
 function diskspace(callback,responseResult) {
-    var df_command=exec(' df -h  / | awk \'NR>1 {print $1 "*-" $3 "*--"$4}\'',  function (error, stdout, stderr) {
+    var df_command=exec(' df -h  / /data 2>/dev/null | awk \'NR>1 {print $1 "*-" $3 "*--"$4}\'',  function (error, stdout, stderr) {
 		var df_result=stdout.split("\n");
 		responseResult.diskspace=[];
 		for(i in df_result) {
